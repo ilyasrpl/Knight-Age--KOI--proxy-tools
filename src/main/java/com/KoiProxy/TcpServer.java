@@ -11,7 +11,6 @@ public class TcpServer {
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                App.addText1("Client terhubung");
 
                 // Tangani client dalam thread terpisah
                 new Thread(() -> handleClient(clientSocket)).start();
@@ -38,17 +37,22 @@ public class TcpServer {
                 // 1. Baca 1 byte untuk message ID
                 try {
                     messageId = dis.readByte();
-                    App.addText1("debug " +String.valueOf(messageId) + "\n");
+                    client.dos.writeByte(messageId);
+                    client.dos.flush();
                     messageId = enc.swap(messageId);
-                    App.addText1("debug " +String.valueOf(messageId) + "\n");
                 } catch (EOFException e) {
                     break; // Client disconnect
                 }
 
                 // 2. Baca 4 byte untuk panjang pesan
                 messageLength = 0;
-                messageLength |= (enc.swap(dis.readByte()) & 0xFF) << 8;
-                messageLength |= (enc.swap(dis.readByte()) & 0xFF);
+                byte length1 = dis.readByte();
+                byte length2 = dis.readByte();
+                client.dos.writeByte(length1);
+                client.dos.writeByte(length2);
+                client.dos.flush();
+                messageLength |= (enc.swap(length1) & 0xFF) << 8;
+                messageLength |= (enc.swap(length2) & 0xFF);
                 
 
                 // 3. Baca isi pesan sepanjang messageLength
@@ -63,26 +67,18 @@ public class TcpServer {
                         totalBytesRead += bytesRead;
                     }
                 }
+                client.dos.write(messageBytes);
+                client.dos.flush();
 
                 Packet packet = new Packet(messageId, messageBytes);
-                client.sendPacket(packet);
-
-                String message = bytesToHex(messageBytes);
-
+                App.addLeftLog(packet.toString());
+                App.refreshTAreaLeft();
             }
 
         } catch (IOException e) {
             System.out.println("Koneksi dengan client terputus.");
+            System.out.println(e.getMessage());
         }
     }
 
-
-
-    public static String bytesToHex(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(String.format("%02x ", b));  // lowercase hex, use %02X for uppercase
-        }
-        return sb.toString().trim();  // remove trailing space
-    }
 }

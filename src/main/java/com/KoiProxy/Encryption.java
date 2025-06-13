@@ -7,7 +7,7 @@ public class Encryption {
     public Encryption(){
         this.isEnabled = false;
         this.checkPoint = 0;
-        this.key = new byte[]{0,0};
+        this.key = new byte[]{0};
     }
 
     public void setKey(byte[] keys) {
