@@ -42,3 +42,8 @@ This command will execute the unit tests located in the `src/test/java` director
 
 *   OS name: Windows 10
 *   Architecture: amd64
+
+## Default Proxy Servers
+
+*   garuda hsindo20.teamobi.com:19130
+*   indonaga hsindo.teamobi.com:19129
