@@ -9,7 +9,6 @@ public class App {
     static public JTextArea textAreaRight;
     static public String leftLog = "";
     static public String rightLog = "";
-    static public JCheckBox rawBox = new JCheckBox("raw log");
     public static void main(String[] args) {
         // Buat frame
         JFrame frame = new JFrame("KOI snip proxy");
@@ -25,14 +24,12 @@ public class App {
         PortField.setPreferredSize(new Dimension(100, 25));
         JButton clearButton = new JButton("CLEAR");
         JButton button = new JButton("RUN");
-        rawBox.setSelected(true);
         topPanel.add(new JLabel("Host: "));
         topPanel.add(hostField);
         topPanel.add(new JLabel("Port: "));
         topPanel.add(PortField);
         topPanel.add(button);
         topPanel.add(clearButton);
-        topPanel.add(rawBox);
 
         // Panel untuk text area
         JPanel centerPanel = new JPanel(new GridLayout(1, 2, 10, 10));
