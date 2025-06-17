@@ -27,8 +27,6 @@ public class TcpClient implements AutoCloseable {
     }
   }
 
-
-
   private void startReceiveThread() {
     Thread receiveThread = new Thread(() -> {
       while (running) {
@@ -83,11 +81,26 @@ public class TcpClient implements AutoCloseable {
           dosClient.flush();
 
           Packet packet = new Packet(packetId, messageBytes);
-          if(packet.type == -40) {
-            enc.setKey(new byte[]{messageBytes[1]});
+
+          // XOR messageBytes
+          for (int i = 0; i < messageBytes.length; i++) {
+            messageBytes[i] = enc.swap(messageBytes[i]);
           }
-          App.addRightLog(packet.toString());
-          App.refreshTAreaRight();
+          if (packet.type == -40) {
+            enc.setKey(new byte[] { messageBytes[1] });
+          }
+
+          final byte finalMessageId = packetId;
+          final byte[] finalMessageBytes = messageBytes;
+          new Thread(() -> {
+
+            Packet packet2 = new Packet(finalMessageId, finalMessageBytes);
+            if (App.rawModeCheckBox.isSelected())
+              App.addRightLog(packet2.toString());
+            if (App.blockModeCheckBox.isSelected())
+              App.addRightLog(new SMsgparser(packet).toString());
+            App.refreshTAreaRight();
+          }).start();
         } catch (IOException e) {
           System.out.println("Terputus dari server atau error saat membaca data.");
           running = false;

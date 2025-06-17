@@ -23,9 +23,9 @@ public class TcpServer {
 
     private static void handleClient(Socket socket) {
         try (
-            DataInputStream dis = new DataInputStream(socket.getInputStream());
-            DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-            
+                DataInputStream dis = new DataInputStream(socket.getInputStream());
+                DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+
         ) {
             Encryption enc = new Encryption();
             TcpClient client = new TcpClient(dis, dos, enc);
@@ -53,7 +53,6 @@ public class TcpServer {
                 client.dos.flush();
                 messageLength |= (enc.swap(length1) & 0xFF) << 8;
                 messageLength |= (enc.swap(length2) & 0xFF);
-                
 
                 // 3. Baca isi pesan sepanjang messageLength
                 messageBytes = new byte[messageLength];
@@ -62,17 +61,30 @@ public class TcpServer {
 
                 while (bytesRead != -1 && totalBytesRead < messageLength) {
                     bytesRead = dis.read(messageBytes, totalBytesRead, messageLength - totalBytesRead);
-                    
+
                     if (bytesRead > 0) {
                         totalBytesRead += bytesRead;
                     }
                 }
+
                 client.dos.write(messageBytes);
                 client.dos.flush();
 
-                Packet packet = new Packet(messageId, messageBytes);
-                App.addLeftLog(packet.toString());
-                App.refreshTAreaLeft();
+                // XOR messageBytes
+                for (int i = 0; i < messageBytes.length; i++) {
+                    messageBytes[i] = enc.swap(messageBytes[i]);
+                }
+
+                final byte finalMessageId = messageId;
+                final byte[] finalMessageBytes = messageBytes;
+                new Thread(() -> {
+                    Packet packet = new Packet(finalMessageId, finalMessageBytes);
+                    if (App.rawModeCheckBox.isSelected())
+                        App.addLeftLog(packet.toString());
+                    if (App.blockModeCheckBox.isSelected())
+                        App.addLeftLog(new CMsgparser(packet).toString());
+                    App.refreshTAreaLeft();
+                }).start();
             }
 
         } catch (IOException e) {

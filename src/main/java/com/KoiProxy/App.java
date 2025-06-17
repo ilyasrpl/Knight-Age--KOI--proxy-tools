@@ -2,18 +2,25 @@ package com.KoiProxy;
 
 import javax.swing.*;
 import java.awt.*;
+import javax.swing.JCheckBox;
+import java.awt.FlowLayout;
 
 public class App {
 
     static public JTextArea textAreaLeft;
     static public JTextArea textAreaRight;
+    static public JCheckBox rawModeCheckBox;
+    static public JCheckBox blockModeCheckBox;
+    static public Packet[] leftPackets;
+    static public Packet[] rightPackets;
     static public String leftLog = "";
     static public String rightLog = "";
+
     public static void main(String[] args) {
         // Buat frame
         JFrame frame = new JFrame("KOI snip proxy");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 400); // Tinggi ditambah untuk komponen baru
+        frame.setSize(800, 400);
         frame.setLayout(new BorderLayout(10, 10));
 
         // Panel untuk input number dan button
@@ -30,6 +37,11 @@ public class App {
         topPanel.add(PortField);
         topPanel.add(button);
         topPanel.add(clearButton);
+
+        rawModeCheckBox = new JCheckBox("Raw Mode", true);
+        blockModeCheckBox = new JCheckBox("Block Mode", true);
+        topPanel.add(rawModeCheckBox);
+        topPanel.add(blockModeCheckBox);
 
         // Panel untuk text area
         JPanel centerPanel = new JPanel(new GridLayout(1, 2, 10, 10));
@@ -62,7 +74,7 @@ public class App {
 
         clearButton.addActionListener(e -> {
             leftLog = "";
-            rightLog ="";
+            rightLog = "";
             textAreaLeft.setText("");
             textAreaRight.setText("");
         });

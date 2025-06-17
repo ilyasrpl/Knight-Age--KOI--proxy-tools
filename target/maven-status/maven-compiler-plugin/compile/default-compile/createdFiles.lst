@@ -1,0 +1,11 @@
+com\KoiProxy\AppEndpoint.class
+com\KoiProxy\TcpClient.class
+com\KoiProxy\CMsgparser.class
+com\KoiProxy\Packet.class
+com\KoiProxy\packetMsg.class
+com\KoiProxy\SMsgparser.class
+com\KoiProxy\TcpServer.class
+com\KoiProxy\App.class
+com\KoiProxy\CPacketType.class
+com\KoiProxy\SPacketType.class
+com\KoiProxy\Encryption.class
