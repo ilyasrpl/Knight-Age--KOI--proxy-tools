@@ -75,6 +75,38 @@ public class SMsgparser {
       }
     }
 
+    if (packetName == "POPUP_MSG") {
+      try {
+        result += "[STR1:" + packet.getDataInput().readUTF() + "]";
+        result += "[STR2:" + packet.getDataInput().readUTF() + "]";
+        result += "[byte:" + packet.getDataInput().readByte() + "]";
+      } catch (java.io.IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    if (packetName == "DOING") {
+      try {
+        int length = packet.getDataInput().readShort();
+        for (int i = 0; i < length; ++i) {
+          short var3 = packet.getDataInput().readShort();
+          String var4 = packet.getDataInput().readUTF();
+          short var5 = (short) packet.getDataInput().readUnsignedByte();
+          int var6 = packet.getDataInput().readInt();
+          byte var7 = packet.getDataInput().readByte();
+
+          result += var3 + "|";
+          result += var4 + "|";
+          result += var5 + "|";
+          result += var6 + "|";
+          result += var7 + "|";
+          
+        }
+      } catch (java.io.IOException e) {
+        e.printStackTrace();
+      }
+    }
+
     return result;
   }
 }

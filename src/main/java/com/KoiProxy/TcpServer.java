@@ -83,7 +83,8 @@ public class TcpServer {
                         App.addLeftLog(packet.toString());
                     if (App.blockModeCheckBox.isSelected())
                         App.addLeftLog(new CMsgparser(packet).toString());
-                    App.refreshTAreaLeft();
+                    if (App.rawModeCheckBox.isSelected() || App.blockModeCheckBox.isSelected())
+                        App.refreshTAreaLeft();
                 }).start();
             }
 

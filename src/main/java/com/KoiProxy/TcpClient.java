@@ -99,7 +99,8 @@ public class TcpClient implements AutoCloseable {
               App.addRightLog(packet2.toString());
             if (App.blockModeCheckBox.isSelected())
               App.addRightLog(new SMsgparser(packet).toString());
-            App.refreshTAreaRight();
+            if (App.rawModeCheckBox.isSelected() || App.blockModeCheckBox.isSelected())
+              App.refreshTAreaRight();
           }).start();
         } catch (IOException e) {
           System.out.println("Terputus dari server atau error saat membaca data.");
