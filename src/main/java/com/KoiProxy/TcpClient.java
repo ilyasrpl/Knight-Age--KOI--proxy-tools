@@ -11,8 +11,9 @@ public class TcpClient implements AutoCloseable {
   public DataOutputStream dosClient;
   public Encryption enc;
   public boolean running;
+  public PlayerSession session; // New field
 
-  public TcpClient(DataInputStream disClient, DataOutputStream dosClient, Encryption enc) {
+  public TcpClient(DataInputStream disClient, DataOutputStream dosClient, Encryption enc, PlayerSession session) {
     try {
       socket = new Socket(AppEndpoint.host, AppEndpoint.port);
       this.dos = new DataOutputStream(socket.getOutputStream());
@@ -20,6 +21,7 @@ public class TcpClient implements AutoCloseable {
       this.disClient = disClient;
       this.dosClient = dosClient;
       this.enc = enc;
+      this.session = session; // Initialize new field
       this.running = true;
       startReceiveThread();
     } catch (IOException e) {
@@ -95,10 +97,11 @@ public class TcpClient implements AutoCloseable {
           new Thread(() -> {
 
             Packet packet2 = new Packet(finalMessageId, finalMessageBytes);
+            String logStr = new SMsgparser(packet, session).toString();
             if (App.rawModeCheckBox.isSelected())
               App.addRightLog(packet2.toString());
             if (App.blockModeCheckBox.isSelected())
-              App.addRightLog(new SMsgparser(packet).toString());
+              App.addRightLog(logStr);
             if (App.rawModeCheckBox.isSelected() || App.blockModeCheckBox.isSelected())
               App.refreshTAreaRight();
           }).start();

@@ -2,8 +2,15 @@ package com.KoiProxy;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class TcpServer {
+    
+    private static int nextSessionId = 1;
+
     public static void start() {
         int port = 19130;
 
@@ -11,9 +18,12 @@ public class TcpServer {
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
+                PlayerSession session = new PlayerSession(nextSessionId++, clientSocket);
+                App.activeSessions.add(session);
+                System.out.println("Client connected. Session ID: " + session.id);
 
                 // Tangani client dalam thread terpisah
-                new Thread(() -> handleClient(clientSocket)).start();
+                new Thread(() -> handleClient(session)).start();
             }
 
         } catch (IOException e) {
@@ -21,14 +31,14 @@ public class TcpServer {
         }
     }
 
-    private static void handleClient(Socket socket) {
+    private static void handleClient(PlayerSession session) {
         try (
-                DataInputStream dis = new DataInputStream(socket.getInputStream());
-                DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+                DataInputStream dis = new DataInputStream(session.socket.getInputStream());
+                DataOutputStream dos = new DataOutputStream(session.socket.getOutputStream());
 
         ) {
             Encryption enc = new Encryption();
-            TcpClient client = new TcpClient(dis, dos, enc);
+            TcpClient client = new TcpClient(dis, dos, enc, session); // Pass session to TcpClient
             while (true) {
                 byte messageId;
                 int messageLength;
@@ -79,18 +89,27 @@ public class TcpServer {
                 final byte[] finalMessageBytes = messageBytes;
                 new Thread(() -> {
                     Packet packet = new Packet(finalMessageId, finalMessageBytes);
+                    String logstr = new CMsgparser(packet, session).toString();
                     if (App.rawModeCheckBox.isSelected())
                         App.addLeftLog(packet.toString());
                     if (App.blockModeCheckBox.isSelected())
-                        App.addLeftLog(new CMsgparser(packet).toString());
+                        App.addLeftLog(logstr);
                     if (App.rawModeCheckBox.isSelected() || App.blockModeCheckBox.isSelected())
                         App.refreshTAreaLeft();
                 }).start();
             }
 
         } catch (IOException e) {
-            System.out.println("Koneksi dengan client terputus.");
+            System.out.println("Koneksi dengan client terputus. Session ID: " + session.id);
             System.out.println(e.getMessage());
+        } finally {
+            App.activeSessions.remove(session);
+            System.out.println("Client disconnected. Session ID: " + session.id);
+            try {
+                session.socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

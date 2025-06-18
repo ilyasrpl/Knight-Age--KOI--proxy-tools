@@ -1,9 +1,11 @@
 package com.KoiProxy;
 
 public class CMsgparser {
+  PlayerSession session;
   Packet packet;
-  CMsgparser(Packet packet){
+  CMsgparser(Packet packet, PlayerSession session){
     this.packet = packet;
+    this.session = session;
   }
 
   @Override
@@ -15,9 +17,12 @@ public class CMsgparser {
 
     if(packetName == "LOGIN") {
       try {
-        result += "[EMAIL:" + packet.getDataInput().readUTF() + "]";
+        String email = packet.getDataInput().readUTF();
+        result += "[EMAIL:" + email + "]";
         result += "[PASSWORD:" + packet.getDataInput().readUTF() + "]";
         result += "[VERSION:" + packet.getDataInput().readUTF() + "]";
+        // TODO
+        session.setEmail(email);
         // TODO
       } catch (java.io.IOException e) {
         e.printStackTrace();
@@ -27,7 +32,11 @@ public class CMsgparser {
     if(packetName == "ACC_SELECT") {
       try {
         packet.getDataInput().readByte(); // always 0
-        result += "[ACC_ID:" + packet.getDataInput().readInt() + "]";
+        int id = packet.getDataInput().readInt();
+        result += "[ACC_ID:" + id + "]";
+        CharOpt charopt = CharOpt.findById(session.CharOpt, id);
+        session.setName(charopt.name);
+        session.setLevel(charopt.level);
       } catch (java.io.IOException e) {
         e.printStackTrace();
       }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.KoiProxy.AppTest" time="0.024" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.KoiProxy.AppTest" time="0.0" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="windows"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
@@ -19,7 +19,7 @@
     <property name="user.country" value="GB"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_202\jre\bin"/>
-    <property name="sun.java.command" value="C:\Users\ThinkPad\AppData\Local\Temp\surefire4302742221273211292\surefirebooter-20250617204552334_9.jar C:\Users\ThinkPad\AppData\Local\Temp\surefire4302742221273211292 2025-06-17T20-14-50_732-jvmRun1 surefire-20250617204552334_7tmp surefire_2-20250617204552334_8tmp"/>
+    <property name="sun.java.command" value="C:\Users\ThinkPad\AppData\Local\Temp\surefire7080689278806459429\surefirebooter-20250618083321495_36.jar C:\Users\ThinkPad\AppData\Local\Temp\surefire7080689278806459429 2025-06-18T07-07-50_114-jvmRun1 surefire-20250618083321495_34tmp surefire_11-20250618083321495_35tmp"/>
     <property name="surefire.test.class.path" value="E:\koi\koi-java-proxy\proxy\target\test-classes;E:\koi\koi-java-proxy\proxy\target\classes;C:\Users\ThinkPad\.m2\repository\junit\junit\3.8.1\junit-3.8.1.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\ThinkPad"/>
@@ -33,7 +33,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="C:\Users\ThinkPad\AppData\Local\Temp\surefire4302742221273211292\surefirebooter-20250617204552334_9.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\ThinkPad\AppData\Local\Temp\surefire7080689278806459429\surefirebooter-20250618083321495_36.jar"/>
     <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.8.0_202\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_202\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_202\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.8.0_202\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_202\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_202\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_202\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_202\jre\classes"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
@@ -63,5 +63,5 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="52.0"/>
   </properties>
-  <testcase name="testApp" classname="com.KoiProxy.AppTest" time="0.016"/>
+  <testcase name="testApp" classname="com.KoiProxy.AppTest" time="0.0"/>
 </testsuite>

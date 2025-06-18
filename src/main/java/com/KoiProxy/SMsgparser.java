@@ -2,9 +2,11 @@ package com.KoiProxy;
 
 public class SMsgparser {
   Packet packet;
+  PlayerSession session;
 
-  SMsgparser(Packet packet) {
+  SMsgparser(Packet packet, PlayerSession session) {
     this.packet = packet;
+    this.session = session;
   }
 
   @Override
@@ -58,7 +60,8 @@ public class SMsgparser {
             var13[var15] = var16;
           }
 
-          short var19 = packet.getDataInput().readShort();
+          short level = packet.getDataInput().readShort();
+          result += "[LEVEL:" + level + "]";
           var15 = packet.getDataInput().readByte();
           packet.getDataInput().readByte();
           packet.getDataInput().readByte();
@@ -68,7 +71,9 @@ public class SMsgparser {
             byte a6 = packet.getDataInput().readByte();
             result += "[CLAN:" + a5 + "]";
           }
-          // todo
+
+          session.CharOpt[i] = new CharOpt(id, name, level);
+
         }
       } catch (java.io.IOException e) {
         e.printStackTrace();

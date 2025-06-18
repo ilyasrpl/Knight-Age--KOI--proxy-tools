@@ -2,8 +2,9 @@ package com.KoiProxy;
 
 import javax.swing.*;
 import java.awt.*;
-import javax.swing.JCheckBox;
-import java.awt.FlowLayout;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class App {
 
@@ -15,6 +16,7 @@ public class App {
     static public Packet[] rightPackets;
     static public String leftLog = "";
     static public String rightLog = "";
+    public static final List<PlayerSession> activeSessions = Collections.synchronizedList(new ArrayList<>());
 
     public static void main(String[] args) {
         // Buat frame
@@ -31,12 +33,14 @@ public class App {
         PortField.setPreferredSize(new Dimension(100, 25));
         JButton clearButton = new JButton("CLEAR");
         JButton button = new JButton("RUN");
+        JButton sessionButton = new JButton("Session"); // New session button
         topPanel.add(new JLabel("Host: "));
         topPanel.add(hostField);
         topPanel.add(new JLabel("Port: "));
         topPanel.add(PortField);
         topPanel.add(button);
         topPanel.add(clearButton);
+        topPanel.add(sessionButton); // Add session button to topPanel
 
         rawModeCheckBox = new JCheckBox("Raw Mode", true);
         blockModeCheckBox = new JCheckBox("Block Mode", true);
@@ -77,6 +81,11 @@ public class App {
             rightLog = "";
             textAreaLeft.setText("");
             textAreaRight.setText("");
+        });
+
+        // Add action listener for the Session button
+        sessionButton.addActionListener(e -> {
+            new SessionFrame(App.activeSessions); // Create a new instance of SessionFrame with the class property
         });
     }
 
