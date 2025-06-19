@@ -85,7 +85,7 @@ public class App {
 
         // Add action listener for the Session button
         sessionButton.addActionListener(e -> {
-            new SessionFrame(App.activeSessions); // Create a new instance of SessionFrame with the class property
+            new SessionFrame(); // Create a new instance of SessionFrame
         });
     }
 

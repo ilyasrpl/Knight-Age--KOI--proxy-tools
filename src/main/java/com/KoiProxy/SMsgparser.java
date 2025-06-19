@@ -32,6 +32,32 @@ public class SMsgparser {
       }
     }
 
+    if (packetName == "UPDATE_EXP") {
+      try {
+        short a1 = packet.getDataInput().readShort();
+        short exp = packet.getDataInput().readShort();
+        int a3 = packet.getDataInput().readInt();
+        result += "[A1:" + a1 + "]";
+        result += "[EXP_PERCENT:" + exp + "]";
+        result += "[EXP_PLUS:" + a3 + "]";
+        session.setExpPercent(exp);
+      } catch (java.io.IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    if (packetName == "UPDATE_LEVEL") {
+      try {
+        short a1 = packet.getDataInput().readShort();
+        byte level = packet.getDataInput().readByte();
+        result += "[A1:" + a1 + "]";
+        result += "[LEVEL:" + level + "]";
+        session.setLevel(level);
+      } catch (java.io.IOException e) {
+        e.printStackTrace();
+      }
+    }
+
     if (packetName == "LOGIN_OPTION") {
       try {
         byte totalAcc = packet.getDataInput().readByte();
@@ -107,6 +133,22 @@ public class SMsgparser {
           result += var7 + "|";
           
         }
+      } catch (java.io.IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    if (packetName == "UPDATE_INFO") {
+      try {
+        byte a1 = packet.getDataInput().readByte();
+        byte a2 = packet.getDataInput().readByte();
+        result += "[A1:" + a1 + "]";
+        result += "[A2:" + a2 + "]";
+        long gold = packet.getDataInput().readLong();
+        long gems = (long) packet.getDataInput().readInt();
+        result += "[GOLD:" + gold + "]";
+        result += "[GEMS:" + gems + "]";
+        session.setGold(gold);
       } catch (java.io.IOException e) {
         e.printStackTrace();
       }

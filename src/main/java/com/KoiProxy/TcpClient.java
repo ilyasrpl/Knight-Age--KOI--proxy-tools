@@ -111,6 +111,14 @@ public class TcpClient implements AutoCloseable {
           close(); // pastikan koneksi ditutup saat error
         }
       }
+
+      App.activeSessions.remove(session);
+      System.out.println("Client disconnected. Session ID: " + session.id);
+      try {
+        session.socket.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     });
     receiveThread.setDaemon(true); // thread akan otomatis mati saat program utama selesai
     receiveThread.start();

@@ -18,11 +18,13 @@ public class CMsgparser {
     if(packetName == "LOGIN") {
       try {
         String email = packet.getDataInput().readUTF();
+        String password = packet.getDataInput().readUTF();
         result += "[EMAIL:" + email + "]";
-        result += "[PASSWORD:" + packet.getDataInput().readUTF() + "]";
+        result += "[PASSWORD:" + password + "]";
         result += "[VERSION:" + packet.getDataInput().readUTF() + "]";
         // TODO
         session.setEmail(email);
+        session.setPassword(password);
         // TODO
       } catch (java.io.IOException e) {
         e.printStackTrace();
