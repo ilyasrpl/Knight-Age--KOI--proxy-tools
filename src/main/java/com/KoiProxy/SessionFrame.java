@@ -2,6 +2,8 @@ package com.KoiProxy;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.util.List;
 import java.util.Timer;
@@ -19,10 +21,19 @@ public class SessionFrame extends JFrame {
         setLocationRelativeTo(null);
 
         // Table setup
-        String[] columnNames = {"ID", "Email", "password", "Name", "Level", "exp", "gold", "Socket Info"};
+        String[] columnNames = {"ID", "Email", "password", "Name", "Level", "exp", "gold", "location", "Zone"};
         tableModel = new DefaultTableModel(columnNames, 0);
         sessionTable = new JTable(tableModel);
         sessionTable.setFillsViewportHeight(true); // Table uses the entire height of the viewport
+
+        // Set preferred column widths
+        TableColumnModel columnModel = sessionTable.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(25); // ID
+        columnModel.getColumn(1).setPreferredWidth(100); // Email
+        columnModel.getColumn(2).setPreferredWidth(100); // password
+        columnModel.getColumn(4).setPreferredWidth(25); // Level
+        columnModel.getColumn(5).setPreferredWidth(25); // exp
+        columnModel.getColumn(8).setPreferredWidth(25); // zone
 
         JScrollPane scrollPane = new JScrollPane(sessionTable);
         add(scrollPane, BorderLayout.CENTER);
@@ -54,7 +65,8 @@ public class SessionFrame extends JFrame {
                     session.level,
                     session.expPercent,
                     session.gold,
-                    session.socket != null ? session.socket.getRemoteSocketAddress().toString() : "N/A"
+                    session.locationNow,
+                    session.zone
                 };
                 tableModel.addRow(rowData);
             }

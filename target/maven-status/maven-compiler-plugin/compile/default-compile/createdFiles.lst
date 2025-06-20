@@ -1,6 +1,7 @@
 com\KoiProxy\catalog\Monsters.class
 com\KoiProxy\CharOpt.class
 com\KoiProxy\CMsgparser.class
+com\KoiProxy\Pos.class
 com\KoiProxy\TcpServer.class
 com\KoiProxy\CPacketType.class
 com\KoiProxy\Encryption.class
