@@ -12,7 +12,10 @@ public class SPacketType {
     new packetMsg((byte) 16, "UPDATE_INFO"),
     new packetMsg((byte) 30, "UPDATE_EXP"),
     new packetMsg((byte) 33, "UPDATE_LEVEL"),
-    new packetMsg((byte) 12, "CHANGE_LOCATION")
+    new packetMsg((byte) 12, "CHANGE_LOCATION"),
+    new packetMsg((byte) 3, "DESC_SELF"),
+    new packetMsg((byte) 32, "HEAL"),
+    new packetMsg((byte) 10, "GOT_ATTACK"),
   };
 
   public String getPacketName(byte packetId) {

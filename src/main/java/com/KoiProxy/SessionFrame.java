@@ -21,7 +21,7 @@ public class SessionFrame extends JFrame {
         setLocationRelativeTo(null);
 
         // Table setup
-        String[] columnNames = {"ID", "Email", "password", "Name", "Level", "exp", "gold", "location", "Zone"};
+        String[] columnNames = { "ID", "Name", "Hp", "Level", "exp", "gold", "location", "Zone" };
         tableModel = new DefaultTableModel(columnNames, 0);
         sessionTable = new JTable(tableModel);
         sessionTable.setFillsViewportHeight(true); // Table uses the entire height of the viewport
@@ -29,11 +29,11 @@ public class SessionFrame extends JFrame {
         // Set preferred column widths
         TableColumnModel columnModel = sessionTable.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(25); // ID
-        columnModel.getColumn(1).setPreferredWidth(100); // Email
-        columnModel.getColumn(2).setPreferredWidth(100); // password
-        columnModel.getColumn(4).setPreferredWidth(25); // Level
-        columnModel.getColumn(5).setPreferredWidth(25); // exp
-        columnModel.getColumn(8).setPreferredWidth(25); // zone
+        columnModel.getColumn(1).setPreferredWidth(100); // Name
+        columnModel.getColumn(2).setPreferredWidth(100); // Hp
+        columnModel.getColumn(3).setPreferredWidth(25); // Level
+        columnModel.getColumn(4).setPreferredWidth(25); // exp
+        columnModel.getColumn(7).setPreferredWidth(25); // zone
 
         JScrollPane scrollPane = new JScrollPane(sessionTable);
         add(scrollPane, BorderLayout.CENTER);
@@ -58,15 +58,14 @@ public class SessionFrame extends JFrame {
         if (playerSessions != null) {
             for (PlayerSession session : playerSessions) {
                 Object[] rowData = {
-                    session.id,
-                    session.email != null ? session.email : "N/A",
-                    session.password != null ? session.password : "N/A",
-                    session.name != null ? session.name : "N/A",
-                    session.level,
-                    session.expPercent,
-                    session.gold,
-                    session.locationNow,
-                    session.zone
+                        session.id,
+                        session.name != null ? session.name : "N/A",
+                        session.hpNow + "/" + session.hpMax,
+                        session.level,
+                        session.expPercent,
+                        session.gold,
+                        session.locationNow,
+                        session.zone
                 };
                 tableModel.addRow(rowData);
             }

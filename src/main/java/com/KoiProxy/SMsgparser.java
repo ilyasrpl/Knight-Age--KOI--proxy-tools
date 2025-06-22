@@ -11,6 +11,7 @@ public class SMsgparser {
 
   @Override
   public String toString() {
+    
     String packetName = new SPacketType().getPacketName(packet.type);
     String result = "[" + packetName + "]";
 
@@ -23,7 +24,7 @@ public class SMsgparser {
       }
     }
 
-    if(packetName == "CHANGE_ZONE") {
+    if (packetName == "CHANGE_ZONE") {
       try {
         byte zone = packet.getDataInput().readByte();
         short x = packet.getDataInput().readByte();
@@ -146,7 +147,7 @@ public class SMsgparser {
           result += var5 + "|";
           result += var6 + "|";
           result += var7 + "|";
-          
+
         }
       } catch (java.io.IOException e) {
         e.printStackTrace();
@@ -157,7 +158,7 @@ public class SMsgparser {
       try {
         int length = packet.getDataInput().readUnsignedByte();
         String[] mapNames = new String[length];
-        for(int i=0; i < length; ++i) {
+        for (int i = 0; i < length; ++i) {
           mapNames[i] = packet.getDataInput().readUTF();
           result += mapNames[i] += "|";
         }
@@ -195,35 +196,133 @@ public class SMsgparser {
         packet.getDataInput().readUTF();
 
         short var2 = packet.getDataInput().readShort();
-         byte[] var3 = null;
-         if (var2 > 0) {
-            var3 = new byte[var2];
-            packet.getDataInput().read(var3);
-         }
-         byte var8;
-         short var9;
-         if ((var8 = packet.getDataInput().readByte()) >= 0) {
-            var9 = packet.getDataInput().readShort();
-         }
-         var9 = packet.getDataInput().readShort();
-         if(var9 > 0) {
+        byte[] var3 = null;
+        if (var2 > 0) {
+          var3 = new byte[var2];
+          packet.getDataInput().read(var3);
+        }
+        byte var8;
+        short var9;
+        if ((var8 = packet.getDataInput().readByte()) >= 0) {
+          var9 = packet.getDataInput().readShort();
+        }
+        var9 = packet.getDataInput().readShort();
+        if (var9 > 0) {
           byte[] a = new byte[var9];
           packet.getDataInput().read(a);
-         }
+        }
 
-         var8 = packet.getDataInput().readByte();
-         for(int var10 = 0; var10 < var8; ++var10) {
-            packet.getDataInput().readShort();
-            packet.getDataInput().readShort();
-            packet.getDataInput().readUTF();
-         }
+        var8 = packet.getDataInput().readByte();
+        for (int var10 = 0; var10 < var8; ++var10) {
+          packet.getDataInput().readShort();
+          packet.getDataInput().readShort();
+          packet.getDataInput().readUTF();
+        }
 
-         packet.getDataInput().readByte();
-         byte zone = packet.getDataInput().readByte();
-         session.setZone(zone);
-         // todo
-         result += "[TODO]";
+        packet.getDataInput().readByte();
+        byte zone = packet.getDataInput().readByte();
+        session.setZone(zone);
+        // todo
+        result += "[TODO]";
 
+      } catch (java.io.IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    if (packetName == "DESC_SELF") {
+      try {
+        short idSessionInGame = packet.getDataInput().readShort();
+        String name = packet.getDataInput().readUTF().toLowerCase();
+        int hpNow = packet.getDataInput().readInt();
+        int hpMax = packet.getDataInput().readInt();
+        int mpNow = packet.getDataInput().readInt();
+        int maxMp = packet.getDataInput().readInt();
+        byte a7 = packet.getDataInput().readByte();
+        byte a8 = packet.getDataInput().readByte();
+        byte a9 = packet.getDataInput().readByte();
+        byte a10 = packet.getDataInput().readByte();
+        result += "[ID_SESSION_IN_GAME:" + idSessionInGame + "]";
+        result += "[NAME:" + name + "]";
+        result += "[HP_NOW:" + hpNow + "]";
+        result += "[HP_MAX:" + hpMax + "]";
+        result += "[MP_NOW:" + mpNow + "]";
+        result += "[MP_MAX:" + maxMp + "]";
+        result += "[A7:" + a7 + "]";
+        result += "[A8:" + a8 + "]";
+        result += "[A9:" + a9 + "]";
+        result += "[A10:" + a10 + "]";
+
+        session.idSessionInGame = idSessionInGame;
+        session.name = name;
+        session.hpNow = hpNow;
+        session.hpMax = hpMax;
+        // todo
+      } catch (java.io.IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    if (packetName == "HEAL") {
+      try {
+        byte a1 = packet.getDataInput().readByte();
+        short idPlayer = packet.getDataInput().readShort();
+        if(idPlayer != session.idSessionInGame) return "";
+        short a3 = packet.getDataInput().readShort(); // is me ?
+        result += "[A1:" + a1 + "]";
+        result += "[A2:" + idPlayer + "]";
+        result += "[A3:" + a3 + "]";
+        byte var4 = packet.getDataInput().readByte();
+        if (var4 == 0) {
+          int hpMax = packet.getDataInput().readInt();
+          int hpNow = packet.getDataInput().readInt();
+          int heal = packet.getDataInput().readInt();
+          result += "[HP_NOW:" + hpNow + "]";
+          result += "[HP_HEAL:" + heal + "]";
+          result += "[HP_MAX:" + hpMax + "]";
+          session.hpNow = hpNow;
+          session.hpMax = hpMax;
+        }
+      } catch (java.io.IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    if (packetName == "GOT_ATTACK") {
+      try {
+        byte a1 = packet.getDataInput().readByte();
+        short a2 = packet.getDataInput().readShort();
+        result += "[A2:" + a2 + "]";
+        if (a1 == 1) {
+          int a3 = packet.getDataInput().readInt();
+          byte a4 = packet.getDataInput().readByte();
+
+          result += "[A3:" + a3 + "]";
+          result += "[A4:" + a4 + "]";
+          byte a5 = packet.getDataInput().readByte();
+          for (int i = 0; i < a5; ++i) {
+            short sessionId = packet.getDataInput().readShort();
+            int a7 = packet.getDataInput().readInt();
+            int hpNow = packet.getDataInput().readInt();
+            byte a9 = packet.getDataInput().readByte();
+            result += "[A6:" + sessionId + "]";
+            result += "[A7:" + a7 + "]";
+            result += "[hpNow:" + hpNow + "]";
+            result += "[A9:" + a9 + "]";
+
+            byte a10 = packet.getDataInput().readByte();
+            for (int j = 0; j < a10; ++j) {
+              byte a11 = packet.getDataInput().readByte();
+              int a12 = packet.getDataInput().readInt();
+              result += "[A11:" + a11 + "]";
+              result += "[A12:" + a12 + "]";
+            }
+
+            if(sessionId == session.idSessionInGame){
+              session.hpNow = hpNow;
+            }
+          }
+        }
       } catch (java.io.IOException e) {
         e.printStackTrace();
       }
